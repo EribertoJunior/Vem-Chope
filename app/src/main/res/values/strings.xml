@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Vem Chope</string>
+    <string name="action_settings">Settings</string>
+    <string name="recarregar">Recarregar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="peso_total">Peso total</string>
+    <string name="salvar">Salvar</string>
+    <string name="pergunta_do_dialog_de_definicao_depeso_total">Qual o peso total do produto?</string>
+    <string name="campo_obrigatorio">campo obrigatório</string>
+    <string name="peso_zero">0.000</string>
+    <string name="dispositivos_encontrados">Dispositivos encontrados</string>
+    <string name="peso_maximo">Peso máximo</string>
+</resources>
