@@ -1,4 +1,4 @@
-package com.example.vemchope
+package com.example.vemchope.view
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -8,13 +8,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.vemchope.adapter.ListDeviceAdapter
-import com.example.vemchope.interfaces.ScanDeviceCompleted
-import com.example.vemchope.interfaces.SelectDevice
+import com.example.vemchope.model.BluetoothController
+import com.example.vemchope.R
+import com.example.vemchope.view.adapter.ListDeviceAdapter
+import com.example.vemchope.model.interfaces.ScanDeviceCompleted
+import com.example.vemchope.model.interfaces.SelectDevice
 import kotlinx.android.synthetic.main.content_dialog_device_fragment.view.*
 import kotlinx.android.synthetic.main.dialog_devices_bluetooth.view.*
 
-class DeviceDialogFragment(private val selectDevice: SelectDevice) : DialogFragment() {
+class DeviceDialog(private val selectDevice: SelectDevice) : DialogFragment() {
 
     private val bluetoothController = BluetoothController()
 

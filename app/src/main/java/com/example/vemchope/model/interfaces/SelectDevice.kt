@@ -1,4 +1,4 @@
-package com.example.vemchope.interfaces
+package com.example.vemchope.model.interfaces
 
 import android.bluetooth.BluetoothDevice
 

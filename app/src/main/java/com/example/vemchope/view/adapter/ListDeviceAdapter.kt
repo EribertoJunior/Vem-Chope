@@ -1,4 +1,4 @@
-package com.example.vemchope.adapter
+package com.example.vemchope.view.adapter
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vemchope.R
-import com.example.vemchope.interfaces.SelectDevice
+import com.example.vemchope.model.interfaces.SelectDevice
 import kotlinx.android.synthetic.main.item_device_bluetooth.view.*
 
 class ListDeviceAdapter(

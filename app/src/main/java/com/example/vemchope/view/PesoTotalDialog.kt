@@ -1,11 +1,13 @@
-package com.example.vemchope
+package com.example.vemchope.view
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import com.example.vemchope.interfaces.DefinicaoDePeso
+import com.example.vemchope.model.MaskEditUtil
+import com.example.vemchope.R
+import com.example.vemchope.model.interfaces.DefinicaoDePeso
 import kotlinx.android.synthetic.main.dialog_peso_total.view.*
 
 class PesoTotalDialog(private val definicaoDePeso: DefinicaoDePeso) : DialogFragment() {
@@ -16,7 +18,12 @@ class PesoTotalDialog(private val definicaoDePeso: DefinicaoDePeso) : DialogFrag
 
         val alertDialog = AlertDialog.Builder(view.context)
 
-        view.etPesoTotal.addTextChangedListener(MaskEditUtil.mask(view.etPesoTotal, MaskEditUtil.PESO))
+        view.etPesoTotal.addTextChangedListener(
+            MaskEditUtil.mask(
+                view.etPesoTotal,
+                MaskEditUtil.PESO
+            )
+        )
 
         alertDialog.apply {
             setView(view)

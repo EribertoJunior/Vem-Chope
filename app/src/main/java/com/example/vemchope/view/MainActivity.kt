@@ -1,21 +1,21 @@
-package com.example.vemchope
+package com.example.vemchope.view
 
 import android.bluetooth.BluetoothDevice
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.example.vemchope.interfaces.DefinicaoDePeso
-import com.example.vemchope.interfaces.SelectDevice
+import com.example.vemchope.R
+import com.example.vemchope.model.interfaces.DefinicaoDePeso
+import com.example.vemchope.model.interfaces.SelectDevice
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var scan: DeviceDialogFragment
+    lateinit var scan: DeviceDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getDevices() {
-        scan = DeviceDialogFragment(selectDevice = object : SelectDevice {
+        scan = DeviceDialog(selectDevice = object : SelectDevice {
             override fun recarregar() {
                 getDevices()
             }
@@ -68,11 +68,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun definitPesoMaximo() {
-        val peso = PesoTotalDialog(definicaoDePeso = object : DefinicaoDePeso {
-            override fun pesoInformado(peso: String) {
-                tvPesoMaximo.text = peso
-            }
-        })
+        val peso =
+            PesoTotalDialog(definicaoDePeso = object : DefinicaoDePeso {
+                override fun pesoInformado(peso: String) {
+                    tvPesoMaximo.text = peso
+                }
+            })
         peso.show(supportFragmentManager, "")
     }
 }

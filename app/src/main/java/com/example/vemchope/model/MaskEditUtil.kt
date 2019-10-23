@@ -1,10 +1,8 @@
-package com.example.vemchope
+package com.example.vemchope.model
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.EditText
-import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*
 
