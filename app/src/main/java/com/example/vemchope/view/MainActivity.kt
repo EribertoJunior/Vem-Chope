@@ -2,11 +2,15 @@ package com.example.vemchope.view
 
 import android.bluetooth.BluetoothDevice
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.vemchope.R
+import com.example.vemchope.model.BluetoothController
+import com.example.vemchope.model.WeightDeviceHandler
+import com.example.vemchope.model.interfaces.Callback
 import com.example.vemchope.model.interfaces.DefinicaoDePeso
 import com.example.vemchope.model.interfaces.SelectDevice
 
@@ -36,10 +40,31 @@ class MainActivity : AppCompatActivity() {
             override fun selected(bluetoothDevice: BluetoothDevice) {
                 Toast.makeText(this@MainActivity, bluetoothDevice.name, Toast.LENGTH_LONG).show()
                 fecharScanDialog()
+                boundDevice(bluetoothDevice)
             }
         })
 
         scan.show(supportFragmentManager, "")
+    }
+
+    private fun boundDevice(device: BluetoothDevice) {
+        Log.d("devlog", "device state: " + device.bondState)
+        if (BluetoothDevice.BOND_BONDED == device.bondState) {
+            connectDevice(device)
+        } else {
+            val bluetoothController = BluetoothController(this)
+            bluetoothController.boundDevice(device, object : Callback<Boolean> {
+                override fun onComplete(result: Boolean) {
+                    Log.d("devlog", "Bound device complete: $result")
+                    if (result) connectDevice(device)
+                }
+            })
+        }
+    }
+
+    private fun connectDevice(device: BluetoothDevice) {
+        Log.d("devlog", "Connect Device")
+        WeightDeviceHandler().connect(device)
     }
 
     private fun fecharScanDialog() {

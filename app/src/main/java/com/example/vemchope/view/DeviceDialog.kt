@@ -18,12 +18,14 @@ import kotlinx.android.synthetic.main.dialog_devices_bluetooth.view.*
 
 class DeviceDialog(private val selectDevice: SelectDevice) : DialogFragment() {
 
-    private val bluetoothController = BluetoothController()
+    private lateinit var bluetoothController: BluetoothController
 
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val view = activity!!.layoutInflater.inflate(R.layout.dialog_devices_bluetooth, null)
+
+        bluetoothController = BluetoothController(view.context)
 
         bluetoothController.initializeBluetoothAdapter()
 
