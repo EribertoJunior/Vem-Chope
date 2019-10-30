@@ -64,7 +64,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun connectDevice(device: BluetoothDevice) {
         Log.d("devlog", "Connect Device")
-        WeightDeviceHandler().connect(device)
+        WeightDeviceHandler(
+            object : Callback<String> {
+                override fun onComplete(data: String) {
+                    this@MainActivity.runOnUiThread {
+
+                        if (data.isNotEmpty() and !data.contains("-")) {
+                            Log.d(">>", data)
+
+                            tvPesoAtual.text = data
+                        }
+                    }
+                }
+            }
+        ).connect(device)
     }
 
     private fun fecharScanDialog() {

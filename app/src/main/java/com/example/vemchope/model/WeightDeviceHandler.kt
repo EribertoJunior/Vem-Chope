@@ -3,10 +3,11 @@ package com.example.vemchope.model
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.util.Log
+import com.example.vemchope.model.interfaces.Callback
 import java.io.IOException
 import java.util.*
 
-class WeightDeviceHandler {
+class WeightDeviceHandler(val callback: Callback<String>) {
     companion object {
         val APP_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     }
@@ -31,6 +32,15 @@ class WeightDeviceHandler {
                                 bluetoothIn.read(buffer, 0, it.available())
                                 val result = String(buffer)
                                 Log.d("devlog", "result: $result")
+
+                                if(result.contains(":") and result.isNotEmpty()){
+                                    //val peso = result.substringBefore(":").toFloat()
+                                    //Log.d(">>", peso.toString())
+                                    //if(peso > 0){
+                                        callback.onComplete(result.substringBefore(":"))
+                                    //}
+                                }
+
                             }
                         }
                     } catch (ex: IOException) {
