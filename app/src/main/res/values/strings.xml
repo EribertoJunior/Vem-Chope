@@ -10,4 +10,5 @@
     <string name="peso_zero">0.000</string>
     <string name="dispositivos_encontrados">Dispositivos encontrados</string>
     <string name="peso_maximo">Peso máximo</string>
+    <string name="kg">KG</string>
 </resources>

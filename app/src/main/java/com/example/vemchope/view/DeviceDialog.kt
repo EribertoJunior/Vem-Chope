@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.vemchope.model.BluetoothController
+import com.example.vemchope.model.bluetooth.BluetoothController
 import com.example.vemchope.R
 import com.example.vemchope.view.adapter.ListDeviceAdapter
 import com.example.vemchope.model.interfaces.ScanDeviceCompleted

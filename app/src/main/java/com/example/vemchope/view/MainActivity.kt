@@ -7,12 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.example.vemchope.R
-import com.example.vemchope.model.BluetoothController
-import com.example.vemchope.model.WeightDeviceHandler
-import com.example.vemchope.model.interfaces.Callback
+import com.example.vemchope.model.entidade.Medicao
+import com.example.vemchope.model.enums.STATUS
 import com.example.vemchope.model.interfaces.DefinicaoDePeso
 import com.example.vemchope.model.interfaces.SelectDevice
+import com.example.vemchope.view_model.MedicaoViewModel
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -21,14 +24,53 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var scan: DeviceDialog
 
+    private val viewModel by lazy {
+        ViewModelProviders.of(this).get(MedicaoViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        initObservables()
+
         fab.setOnClickListener { view ->
             getDevices()
         }
+    }
+
+    private fun initObservables() {
+        viewModel.medicaoData.observe(this, Observer {
+            when (it.status) {
+                STATUS.ATUALIZAR -> {
+                    atualizarValores(it)
+
+                }
+                STATUS.NOTIFICAR -> {
+                    NotificationCompat.Builder(this, "")
+                        //.setSmallIcon(R.drawable.notification_icon)
+                        .setContentTitle("Vem Chope")
+                        .setContentText("Trás o refil ae...")
+                        .priority = NotificationCompat.PRIORITY_DEFAULT
+                    atualizarValores(it)
+                }
+                STATUS.MENSAGEM -> {
+                    Toast.makeText(this, it.mensagem, Toast.LENGTH_LONG).show()
+                }
+            }
+
+        })
+    }
+
+    private fun atualizarValores(it: Medicao) {
+        tvPesoAtual.text = it.pesoAtual.toString()
+        tvPesoMaximo.text = it.pesoMaximo.toString()
+        tvPorcentagem.text = it.porcentagem.toString()
+        Log.d(
+            "medidas",
+            "pesoMaximo: ${it.pesoMaximo}, pesoAtual: ${it.pesoAtual}, ${it.porcentagem}%"
+        )
     }
 
     private fun getDevices() {
@@ -40,14 +82,14 @@ class MainActivity : AppCompatActivity() {
             override fun selected(bluetoothDevice: BluetoothDevice) {
                 Toast.makeText(this@MainActivity, bluetoothDevice.name, Toast.LENGTH_LONG).show()
                 fecharScanDialog()
-                boundDevice(bluetoothDevice)
+                viewModel.boundDevice(bluetoothDevice, this@MainActivity)
             }
         })
 
         scan.show(supportFragmentManager, "")
     }
 
-    private fun boundDevice(device: BluetoothDevice) {
+    /*private fun boundDevice(device: BluetoothDevice) {
         Log.d("devlog", "device state: " + device.bondState)
         if (BluetoothDevice.BOND_BONDED == device.bondState) {
             connectDevice(device)
@@ -78,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         ).connect(device)
-    }
+    }*/
 
     private fun fecharScanDialog() {
         scan.dismiss()
@@ -109,7 +151,8 @@ class MainActivity : AppCompatActivity() {
         val peso =
             PesoTotalDialog(definicaoDePeso = object : DefinicaoDePeso {
                 override fun pesoInformado(peso: String) {
-                    tvPesoMaximo.text = peso
+                    //tvPesoMaximo.text = peso
+                    viewModel.definitPesoMaximo(peso)
                 }
             })
         peso.show(supportFragmentManager, "")

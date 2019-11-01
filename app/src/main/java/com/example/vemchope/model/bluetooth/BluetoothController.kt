@@ -1,4 +1,4 @@
-package com.example.vemchope.model
+package com.example.vemchope.model.bluetooth
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -7,20 +7,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
 import android.bluetooth.BluetoothDevice.ACTION_BOND_STATE_CHANGED
-import android.bluetooth.BluetoothGattCallback
 import com.example.vemchope.model.interfaces.Callback
 import com.example.vemchope.model.interfaces.ScanDeviceCompleted
 
 
-class BluetoothController {
+class BluetoothController(context: Context) {
     var mBluetoothAdapter: BluetoothAdapter? = null
     var listDevice: ArrayList<BluetoothDevice> = arrayListOf()
 
-    var mContext: Context
-
-    constructor(context: Context) {
-        mContext = context
-    }
+    var mContext: Context = context
 
     fun isBluetoothEnabled(): Boolean {
         return mBluetoothAdapter != null && mBluetoothAdapter?.isEnabled ?: false

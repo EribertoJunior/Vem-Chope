@@ -1,4 +1,4 @@
-package com.example.vemchope.model
+package com.example.vemchope.model.bluetooth
 
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
@@ -15,7 +15,7 @@ class WeightDeviceHandler(val callback: Callback<String>) {
     private var mSocket: BluetoothSocket? = null
 
     fun connect(device: BluetoothDevice) {
-        Thread(Runnable {
+        //Thread(Runnable {
             try {
                 mSocket = device.createInsecureRfcommSocketToServiceRecord(APP_UUID)
                 mSocket?.connect()
@@ -50,6 +50,6 @@ class WeightDeviceHandler(val callback: Callback<String>) {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }).start()
+        //}).start()
     }
 }
