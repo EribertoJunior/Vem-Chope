@@ -3,7 +3,9 @@ package com.example.vemchope.view
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.DialogFragment
@@ -27,6 +29,11 @@ class DeviceDialog(private val selectDevice: SelectDevice) : DialogFragment() {
 
         bluetoothController = BluetoothController(view.context)
 
+        if(!bluetoothController.isBluetoothEnabled()){
+
+            startActivity(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
+        }
+
         bluetoothController.initializeBluetoothAdapter()
 
         view.rvListDevice.apply {
@@ -36,7 +43,6 @@ class DeviceDialog(private val selectDevice: SelectDevice) : DialogFragment() {
 
         val alertDialog = AlertDialog.Builder(view?.context)
         view.progressBar.visibility = View.VISIBLE
-
 
         scanDeviceBluetooth(view)
 
@@ -73,4 +79,5 @@ class DeviceDialog(private val selectDevice: SelectDevice) : DialogFragment() {
             }
         })
     }
+
 }

@@ -15,6 +15,8 @@ import com.example.vemchope.model.interfaces.Callback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
+import kotlin.concurrent.timerTask
 
 class MedicaoViewModel : ViewModel(), LifecycleObserver {
     val medicaoData: MutableLiveData<Medicao> = MutableLiveData(
@@ -22,6 +24,8 @@ class MedicaoViewModel : ViewModel(), LifecycleObserver {
             status = STATUS.ATUALIZAR
         )
     )
+
+    private var notificar = true
 
     fun boundDevice(device: BluetoothDevice, context: Context) {
         Log.d("devlog", "device state: " + device.bondState)
@@ -52,8 +56,10 @@ class MedicaoViewModel : ViewModel(), LifecycleObserver {
                             medicaoData.postValue(medicaoData.value?.apply {
                                 pesoAtual = data.toFloat()
                                 porcentagem = regraDeTres(pesoMaximo, data.toDouble())
-                                status = if(porcentagem <= 20) {
-                                    //mensagem = "Refio"
+                                status = if (porcentagem <= 20 && notificar) {
+                                    notificar = false
+                                    contarTempo()
+
                                     STATUS.NOTIFICAR
                                 } else STATUS.ATUALIZAR
                             })
@@ -64,7 +70,12 @@ class MedicaoViewModel : ViewModel(), LifecycleObserver {
                 ).connect(device)
             }
         }
+    }
 
+    private fun contarTempo() {
+        Timer().schedule(timerTask {
+            notificar = true
+        }, 15000)
     }
 
     fun definitPesoMaximo(peso: String) {

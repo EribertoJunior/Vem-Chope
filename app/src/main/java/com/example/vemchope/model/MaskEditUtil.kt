@@ -12,7 +12,7 @@ object MaskEditUtil {
      */
 
     const val FORMAT_CPF = "###.###.###-##"
-    const val PESO = "#.###"
+    const val PESO = "####.###"
     const val FORMAT_CNPJ = "##.###.###/####-##"
     const val FORMAT_CELULAR = "(##)# ####-####"
     const val FORMAT_TELEFONE = "####-####"
